@@ -1,0 +1,256 @@
+@import url(https://fonts.googleapis.com/css?family=VT323);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+html,
+body {
+  background: #383838;
+  color: #00dd00;
+  font-size: 1.3em;
+  font-family: "VT323", Courier;
+}
+
+.content {
+  animation: scroll 3s 1;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+}
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
+/* Home page */
+
+.container {
+  margin: 0 auto;
+  max-width: 600px;
+  height: 100vh;
+  width: 100vw;
+  padding: 1rem;
+  text-align: center;
+}
+
+.home-header {
+  height: 60%;
+}
+
+.home-image {
+  margin-top: 1rem;
+  max-height: 50%;
+}
+
+.home-login {
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-login select {
+  margin: 1rem 0;
+  text-transform: uppercase;
+}
+
+.home-login button {
+  text-transform: uppercase;
+}
+
+/* Room and users component */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.chat-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem;
+  border-bottom: 1px solid #00dd00;
+  text-transform: uppercase;
+}
+
+.chat-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header-top button {
+  width: 35%;
+  max-width: 100px;
+  text-transform: uppercase;
+}
+
+.chat-header-bottom {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.chat-header-bottom ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.users-title {
+  font-size: 1.2rem;
+}
+
+/* Messages */
+.messages-container {
+  height: 70vh;
+  overflow-y: scroll;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+.message {
+  max-width: 600px;
+  margin-bottom: 0.5rem;
+}
+
+.message-info {
+  font-size: 0.75rem;
+}
+
+.chat-bottom {
+  position: fixed;
+  bottom: 0.5rem;
+  left: 0;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: 0 0.2rem;
+}
+
+form input {
+  max-width: 250px;
+}
+
+form button {
+  width: 60px;
+  margin-left: 0.1rem;
+  text-transform: uppercase;
+}
+
+input:focus,
+a.button:focus {
+  outline: 0;
+}
+
+select,
+button,
+input,
+button {
+  width: 300px;
+  background: transparent;
+  border: 2px solid #00dd00;
+  color: #00dd00;
+  display: inline-block;
+  font-family: "VT323", Courier;
+  font-size: 1.5rem;
+  opacity: 0.7;
+  position: relative;
+  text-decoration: none;
+  z-index: 10;
+  cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover,
+button:hover {
+  background: #00dd00;
+  color: #383838;
+  opacity: 0.8;
+}
+
+/* scrollbar */
+
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00dd00;
+  border-radius: 5px;
+}
+
+/* overlay */
+
+.overlay {
+  height: 1px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+}
+
+.overlay:before {
+  background: linear-gradient(#101010 50%, rgba(16, 16, 16, 0.2) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.03),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.03)
+    );
+  background-size: 100% 3px, 6px 100%;
+  content: "";
+  display: block;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.overlay:after {
+  animation: flicker 0.3s infinite;
+  background: rgba(16, 16, 16, 0.2);
+  content: "";
+  display: block;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+@media screen and (min-width: 425px) {
+  .home-header {
+    padding-top: 2rem;
+  }
+
+  .home-image {
+    max-height: 70%;
+  }
+
+  .chat-bottom {
+    position: fixed;
+    bottom: 0.5rem;
+    width: 100%;
+    padding: 0;
+  }
+}
