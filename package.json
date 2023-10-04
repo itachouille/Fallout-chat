@@ -2,6 +2,7 @@
   "name": "nodejs-sandbox",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "start": "nodemon index.js"

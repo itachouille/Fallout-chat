@@ -1,22 +1,20 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const app = express();
-const http = require("http");
-const cors = require("cors");
-const { Server } = require("socket.io");
-const dotenv = require("dotenv");
-const Message = require("./models/Message");
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import http from "http";
+import { Server } from "socket.io";
+import Message from "./models/Message.js";
+dotenv.config();
 
 const port = process.env.PORT || 8000;
 
-dotenv.config();
-mongoose.connect(process.env.MONGO_URL);
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 const server = http.createServer(app);
-
 const CHAT_BOT = "ChatBot";
 let chatRoom = "";
 let allUsers = [];
@@ -98,6 +96,22 @@ io.on("connection", (socket) => {
       });
     }
   });
+});
+
+mongoose.connect(process.env.MONGO_URL).catch((err) => {
+  console.error(`Erreur lors de la connection initiale à MongoDB: ${err}`);
+});
+
+mongoose.connection.on("connected", () => {
+  console.log("Connecté à MongoDB");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.error(`Erreur de connection à MongoDB: ${err}`);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.warn("Déconnexion de MongoDB");
 });
 
 server.listen(port, () => console.log(`Server is running on port: ${port}`));
