@@ -7,6 +7,8 @@ const { Server } = require("socket.io");
 const dotenv = require("dotenv");
 const Message = require("./models/Message");
 
+const port = process.env.PORT || 8000;
+
 dotenv.config();
 mongoose.connect(process.env.MONGO_URL);
 
@@ -98,4 +100,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(4000, () => console.log("Server is running on port 4000"));
+server.listen(port, () => console.log(`Server is running on port: ${port}`));
