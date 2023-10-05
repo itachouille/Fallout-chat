@@ -3,10 +3,23 @@ const { Schema } = mongoose;
 
 const MessageSchema = new Schema(
   {
-    message: String,
-    username: String,
-    room: String,
-    time: Number,
+    message: {
+      type: String,
+      required: [true, "Message is required"],
+      maxlength: [100, "Title should not exceed 100 characters"],
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    room: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
