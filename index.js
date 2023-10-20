@@ -25,7 +25,7 @@ function leaveRoom(userID, chatRoomUsers) {
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.SERVER,
+    origin: process.env.FRONT_URL,
     methods: ["GET", "POST"],
   },
 });
