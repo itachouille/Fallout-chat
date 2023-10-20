@@ -212,7 +212,9 @@ button:hover {
       rgba(0, 255, 0, 0.02),
       rgba(0, 0, 255, 0.03)
     );
-  background-size: 100% 3px, 6px 100%;
+  background-size:
+    100% 3px,
+    6px 100%;
   content: "";
   display: block;
   pointer-events: none;
@@ -253,4 +255,9 @@ button:hover {
     width: 100%;
     padding: 0;
   }
+}
+
+.error {
+  text-align: center;
+  color: red;
 }

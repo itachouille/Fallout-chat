@@ -1,13 +1,24 @@
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../hooks/userContext";
 
-export default function Home({ username, setUsername, room, setRoom, socket }) {
+export default function Home() {
+  const validRooms = ["013", "101", "111", "076"];
+  const { username, setUsername, room, setRoom, socket } =
+    useContext(UserContext);
+  const [usernameError, setUsernameError] = useState("");
+  const [shelterError, setShelterError] = useState("");
   const navigate = useNavigate();
 
   const joinRoom = () => {
-    if (room !== "" && room !== "shelter number" && username !== "") {
+    if (!username) {
+      setUsernameError("Username is required.");
+    } else if (!validRooms.includes(room)) {
+      setShelterError("Please select a valid shelter.");
+    } else {
       socket.emit("join_room", { username, room });
       navigate("/chat", { replace: true });
-    } else return;
+    }
   };
 
   return (
@@ -20,15 +31,26 @@ export default function Home({ username, setUsername, room, setRoom, socket }) {
         <input
           type="text"
           placeholder="Username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setUsernameError("");
+          }}
         />
-        <select onChange={(e) => setRoom(e.target.value)}>
-          <option>shelter number</option>
-          <option value="013">013</option>
-          <option value="101">101</option>
-          <option value="111">111</option>
-          <option value="076">076</option>
+        {usernameError && <div className="error">{usernameError}</div>}
+        <select
+          onChange={(e) => {
+            setRoom(e.target.value);
+            setShelterError("");
+          }}
+        >
+          <option>Shelter Number</option>
+          {validRooms.map((roomValue) => (
+            <option key={roomValue} value={roomValue}>
+              {roomValue}
+            </option>
+          ))}
         </select>
+        {shelterError && <div className="error">{shelterError}</div>}
         <button onClick={joinRoom}>Join Room</button>
       </div>
     </div>

@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../hooks/userContext";
 
-const RoomAndUsers = ({ socket, username, room }) => {
+const RoomAndUsers = () => {
   const [roomUsers, setRoomUsers] = useState([]);
+  const { username, room, socket } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.on("chatroom_users", (data) => {
-      setRoomUsers(data);
+    socket.on("connected_users", (connectedUsers) => {
+      setRoomUsers(connectedUsers);
     });
 
-    return () => socket.off("chatroom_users");
+    return () => socket.off("connected_users");
   }, [socket]);
 
   const leaveRoom = () => {

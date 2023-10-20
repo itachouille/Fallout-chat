@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 const CHAT_BOT = "ChatBot";
-let chatRoom = "";
+let chatRoom = null;
 let allUsers = [];
 let chatRoomUsers = [];
 
@@ -33,8 +33,8 @@ function setupSocketIO(server) {
       });
       chatRoom = room;
       allUsers.push({ id: socket.id, username, room });
-      chatRoomUsers = allUsers.filter((user) => user.room === room);
-      socket.to(room).emit("chatroom_users", chatRoomUsers);
+      chatRoomUsers = [...allUsers.filter((user) => user.room === room)];
+      io.to(room).emit("connected_users", chatRoomUsers);
       socket.emit("chatroom_users", chatRoomUsers);
     });
 
@@ -48,12 +48,14 @@ function setupSocketIO(server) {
       socket.leave(room);
       const time = Date.now();
       allUsers = leaveRoom(socket.id, allUsers);
-      socket.to(room).emit("chatroom_users", allUsers);
+      chatRoomUsers = [...allUsers.filter((user) => user.room === room)];
+      socket.to(room).emit("chatroom_users", chatRoomUsers);
       socket.to(room).emit("receive_message", {
         username: CHAT_BOT,
         message: `${username} has left the chat`,
         time: time,
       });
+      io.to(room).emit("connected_users", chatRoomUsers);
     });
 
     socket.on("disconnect", () => {

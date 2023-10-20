@@ -15,6 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/", chatRoutes);
+app.use((err, _, res, next) => {
+  const status = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(status).json({ message, stack: err.stack });
+});
 
 const server = http.createServer(app);
 setupSocketIO(server);

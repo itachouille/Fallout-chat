@@ -13,7 +13,7 @@ const MessageSchema = new Schema(
       required: true,
     },
     room: {
-      type: String,
+      type: Number,
       required: true,
     },
     time: {

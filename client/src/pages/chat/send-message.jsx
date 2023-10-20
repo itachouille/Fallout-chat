@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import UserContext from "../../hooks/userContext";
 
-const SendMessage = ({ socket, username, room }) => {
+const SendMessage = () => {
   const [message, setMessage] = useState("");
+  const { username, room, socket } = useContext(UserContext);
+  const [errors, setErrors] = useState("");
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -13,35 +16,41 @@ const SendMessage = ({ socket, username, room }) => {
       time,
     };
     setMessage("");
-
-    socket.emit("send_message", { username, room, message, time });
-    try {
-      await fetch("https://1ezicw-4000.csb.app/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      setMessage("");
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(`${process.env.REACT_APP_BACK_URL}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errors = errorData.errors;
+      setErrors(errors);
+    } else {
+      socket.emit("send_message", { username, room, message, time });
     }
   }
 
   return (
     <div className="chat-bottom">
-    <form onSubmit={sendMessage}>
-      <input
-        type="text"
-        value={message}
-        placeholder="Message..."
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button type="submit" disabled={!message}>
-        Send
-      </button>
-    </form>
+      {errors && (
+        <div className="error">
+          <p>{errors}</p>
+        </div>
+      )}
+      <form onSubmit={sendMessage}>
+        <input
+          type="text"
+          value={message}
+          placeholder="Message..."
+          onChange={(e) => {
+            setMessage(e.target.value);
+            setErrors("");
+          }}
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 };
