@@ -6,7 +6,7 @@ const MessageSchema = new Schema(
     message: {
       type: String,
       required: [true, "Message is required"],
-      maxlength: [100, "Title should not exceed 100 characters"],
+      maxlength: [100, "your message should not exceed 100 characters"],
     },
     username: {
       type: String,

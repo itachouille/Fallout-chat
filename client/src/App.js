@@ -5,7 +5,8 @@ import Chat from "./pages/chat/index";
 import { io } from "socket.io-client";
 import { useState } from "react";
 
-const socket = io.connect("https://1ezicw-4000.csb.app/");
+const socket = io.connect(process.env.REACT_APP_BACK_URL);
+https://1ezicw-4000.csb.app
 
 function App() {
   const [username, setUsername] = useState("");
