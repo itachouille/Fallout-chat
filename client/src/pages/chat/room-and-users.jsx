@@ -4,7 +4,8 @@ import UserContext from "../../hooks/userContext";
 
 const RoomAndUsers = () => {
   const [roomUsers, setRoomUsers] = useState([]);
-  const { username, room, socket } = useContext(UserContext);
+  const { username, setUsername, room, setRoom, socket } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -19,6 +20,8 @@ const RoomAndUsers = () => {
   const leaveRoom = () => {
     const __createdtime__ = Date.now();
     socket.emit("leave_room", { username, room, __createdtime__ });
+    setUsername(null);
+    setRoom(null);
     navigate("/", { replace: true });
   };
 

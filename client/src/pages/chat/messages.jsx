@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef, useContext } from "react";
+import Message from "../../components/Message";
 import UserContext from "../../hooks/userContext";
 
 const Messages = () => {
-  const { username, room, socket } = useContext(UserContext);
+  const { room, socket } = useContext(UserContext);
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const [oldMessages, setOldMessages] = useState([]);
   const scrollRef = useRef();
 
   useEffect(() => {
+    getOldMessages(room);
+  }, [room]);
+
+  function getOldMessages(room) {
     fetch(`${process.env.REACT_APP_BACK_URL}/chat/${room}`)
       .then((response) => {
         if (response.ok) {
@@ -21,77 +26,38 @@ const Messages = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [room]);
+  }
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
+    const receiveMessage = (data) => {
       setMessagesReceived((state) => [
         ...state,
         {
           message: data.message,
           username: data.username,
-          __createdtime__: data.time,
+          createdAt: data.time,
         },
       ]);
-    });
-    scrollRef.current?.scrollIntoView();
-    return () => socket.off("receive_message");
+      scrollRef.current?.scrollIntoView();
+    };
+
+    socket.on("receive_message", receiveMessage);
+
+    return () => socket.off("receive_message", receiveMessage);
   }, [socket]);
 
-  function formatDateFromTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  }
-
   return (
-    <div className="messages-container">
-      <>
+    <>
+      <div className="messages-container">
         {oldMessages.map((message, index) => (
-          <div className="message" key={index}>
-            {message.username === username ? (
-              <div style={{ textAlign: "right" }}>
-                <p className="message-info">{message.username}</p>
-                <p className="message-info">
-                  {formatDateFromTimestamp(message.time)}
-                </p>
-                <p>{message.message}</p>
-              </div>
-            ) : (
-              <div>
-                <p className="message-info">{message.username}</p>
-                <p className="message-info">
-                  {formatDateFromTimestamp(message.time)}
-                </p>
-                <p>{message.message}</p>
-              </div>
-            )}
-          </div>
+          <Message message={message} key={index} />
         ))}
-      </>
-      <>
         {messagesRecieved.map((message, index) => (
-          <div ref={scrollRef} className="message" key={index}>
-            {message.username === username ? (
-              <div style={{ textAlign: "right" }}>
-                <p className="message-info">{message.username}</p>
-                <p className="message-info">
-                  {formatDateFromTimestamp(message.__createdtime__)}
-                </p>
-                <p>{message.message}</p>
-              </div>
-            ) : (
-              <div>
-                <p className="message-info">{message.username}</p>
-                <p className="message-info">
-                  {formatDateFromTimestamp(message.__createdtime__)}
-                </p>
-                <p>{message.message}</p>
-              </div>
-            )}
-          </div>
+          <Message message={message} key={index} />
         ))}
-      </>
-    </div>
+      </div>
+      <div ref={scrollRef}></div>
+    </>
   );
 };
 

@@ -36,7 +36,7 @@ export default function Home() {
             setUsernameError("");
           }}
         />
-        {usernameError && <div className="error">{usernameError}</div>}
+
         <select
           onChange={(e) => {
             setRoom(e.target.value);
@@ -50,8 +50,9 @@ export default function Home() {
             </option>
           ))}
         </select>
-        {shelterError && <div className="error">{shelterError}</div>}
         <button onClick={joinRoom}>Join Room</button>
+        {usernameError && <div className="error">{usernameError}</div>}
+        {shelterError && <div className="error">{shelterError}</div>}
       </div>
     </div>
   );

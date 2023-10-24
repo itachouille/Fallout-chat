@@ -240,6 +240,11 @@ button:hover {
   z-index: 2;
 }
 
+.error {
+  text-align: center;
+  color: red;
+}
+
 @media screen and (min-width: 425px) {
   .home-header {
     padding-top: 2rem;
@@ -255,9 +260,4 @@ button:hover {
     width: 100%;
     padding: 0;
   }
-}
-
-.error {
-  text-align: center;
-  color: red;
 }

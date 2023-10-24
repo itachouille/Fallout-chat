@@ -13,7 +13,6 @@ const SendMessage = () => {
       message,
       username,
       room,
-      time,
     };
     setMessage("");
     const response = await fetch(`${process.env.REACT_APP_BACK_URL}/chat`, {
