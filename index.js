@@ -8,7 +8,7 @@ import setupSocketIO from "./socket/chatSocket.js";
 
 dotenv.config();
 
-const port = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 
@@ -25,19 +25,19 @@ const server = http.createServer(app);
 setupSocketIO(server);
 
 mongoose.connect(process.env.MONGO_URL).catch((err) => {
-  console.error(`Erreur lors de la connection initiale à MongoDB: ${err}`);
+  console.error(`Error during initial connection to MongoDB: ${err}`);
 });
 
 mongoose.connection.on("connected", () => {
-  console.log("Connecté à MongoDB");
+  console.log("Connected to MongoDB");
 });
 
 mongoose.connection.on("error", (err) => {
-  console.error(`Erreur de connection à MongoDB: ${err}`);
+  console.error(`Error connecting to MongoDB: ${err}`);
 });
 
 mongoose.connection.on("disconnected", () => {
-  console.warn("Déconnexion de MongoDB");
+  console.warn("Disconnecting from MongoDB");
 });
 
-server.listen(port, () => console.log(`Server is running on port: ${port}`));
+server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

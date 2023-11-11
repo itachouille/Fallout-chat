@@ -242,7 +242,7 @@ button:hover {
 
 .error {
   text-align: center;
-  color: red;
+  color: #ff4040;
 }
 
 @media screen and (min-width: 425px) {

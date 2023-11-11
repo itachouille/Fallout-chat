@@ -33,11 +33,7 @@ const SendMessage = () => {
 
   return (
     <div className="chat-bottom">
-      {errors && (
-        <div className="error">
-          <p>{errors}</p>
-        </div>
-      )}
+      {errors && <div className="error">{errors}</div>}
       <form onSubmit={sendMessage}>
         <input
           type="text"

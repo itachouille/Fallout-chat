@@ -12,6 +12,15 @@ const Messages = () => {
     getOldMessages(room);
   }, [room]);
 
+  useEffect(() => {
+    if (scrollRef) {
+      scrollRef.current.addEventListener("DOMNodeInserted", (event) => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight, behavior: "smooth" });
+      });
+    }
+  }, []);
+
   function getOldMessages(room) {
     fetch(`${process.env.REACT_APP_BACK_URL}/chat/${room}`)
       .then((response) => {
@@ -38,17 +47,14 @@ const Messages = () => {
           createdAt: data.time,
         },
       ]);
-      scrollRef.current?.scrollIntoView();
     };
-
     socket.on("receive_message", receiveMessage);
-
     return () => socket.off("receive_message", receiveMessage);
   }, [socket]);
 
   return (
     <>
-      <div className="messages-container">
+      <div className="messages-container" ref={scrollRef}>
         {oldMessages.map((message, index) => (
           <Message message={message} key={index} />
         ))}
@@ -56,7 +62,6 @@ const Messages = () => {
           <Message message={message} key={index} />
         ))}
       </div>
-      <div ref={scrollRef}></div>
     </>
   );
 };
